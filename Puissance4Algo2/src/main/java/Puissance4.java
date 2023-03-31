@@ -120,14 +120,22 @@ public class Puissance4 {
      * @return
      */
     private int getValueDiagonal(PLace pLace) {
+        int value = 0;
+        int valueTopLeftBottomRight = 0;
+        int valueTopRightBottomLeft = 0;
         if(possibleTopLeftBottomRight(pLace) && possibleTopRightBottomLeft(pLace)){
-            return getValueTopLeftBottomRight(pLace) + getValueTopRightBottomLeft(pLace);
+            valueTopLeftBottomRight=  getValueTopLeftBottomRight(pLace);
+            valueTopRightBottomLeft =  getValueTopRightBottomLeft(pLace);
         } else if (possibleTopLeftBottomRight(pLace)){
-            return getValueTopLeftBottomRight(pLace);
+            valueTopLeftBottomRight = getValueTopLeftBottomRight(pLace);
         } else if (possibleTopRightBottomLeft(pLace)){
-            return getValueTopRightBottomLeft(pLace);
+            valueTopRightBottomLeft = getValueTopRightBottomLeft(pLace);
         }
-        return 0;
+        value = valueTopLeftBottomRight + valueTopRightBottomLeft;
+        if(valueTopLeftBottomRight >= 4 || valueTopRightBottomLeft>=4){
+            value += 10;
+        }
+        return value;
     }
 
     /**
@@ -277,11 +285,11 @@ public class Puissance4 {
      * @return
      */
     private int getValueVertical(PLace pLace){
-        if(possibleVertical(pLace)){
-            return calculValueVertical(pLace);
-        } else {
-            return 0;
+        int value = 0;
+        if(possibleVertical(pLace)) {
+            value = calculValueVertical(pLace);
         }
+        return value >= 4 ? value*10 : value;
     }
 
     /**
@@ -363,11 +371,11 @@ public class Puissance4 {
      * @return
      */
     private int getValueHorizontal(PLace pLace){
+        int value = 0;
         if(possibleHorizontal(pLace)){
-            return calculValueHorizontal(pLace);
-        } else {
-            return 0;
+            value = calculValueHorizontal(pLace);
         }
+        return value >= 4 ? value*10 : value;
     }
 
     /**
