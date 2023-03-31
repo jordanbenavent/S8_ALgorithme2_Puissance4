@@ -1,7 +1,79 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class Puissance4 {
+
+    // Reste du code existant ...
+
+    int minimax(int depth, int color, int alpha, int beta, boolean maximizingPlayer) {
+        if (depth == 0 || isFull()) {
+            return getValueBoard(color);
+        }
+
+        List<Integer> validMoves = getValidMoves();
+        if (maximizingPlayer) {
+            int maxEval = Integer.MIN_VALUE;
+            for (int move : validMoves) {
+                int line = getColumnHeight(move);
+                set(move, line, color);
+                int eval = minimax(depth - 1, color, alpha, beta, false);
+                set(move, line, 0); // Undo the move
+                maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return maxEval;
+        } else {
+            int minEval = Integer.MAX_VALUE;
+            for (int move : validMoves) {
+                int line = getColumnHeight(move);
+                set(move, line, 3 - color);
+                int eval = minimax(depth - 1, color, alpha, beta, true);
+                set(move, line, 0); // Undo the move
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+    }
+
+    boolean isFull() {
+        for (List<Integer> column : board) {
+            if (column.get(5) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    List<Integer> getValidMoves() {
+        List<Integer> validMoves = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            if (board.get(i).get(5) == 0) {
+                validMoves.add(i);
+            }
+        }
+        return validMoves;
+    }
+
+    int getColumnHeight(int col) {
+        int height = 0;
+        for (int value : board.get(col)) {
+            if (value != 0) {
+                height++;
+            } else {
+                break;
+            }
+        }
+        return height;
+    }
 
     List<List<Integer>> board = new ArrayList<>();
 
