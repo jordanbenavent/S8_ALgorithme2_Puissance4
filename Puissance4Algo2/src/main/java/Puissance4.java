@@ -7,6 +7,60 @@ public class Puissance4 {
 
     // Reste du code existant ...
 
+    int bestCoup(int color) {
+        int bestMove = -1;
+        int bestValue = Integer.MIN_VALUE;
+        List<Integer> validMoves = getValidMoves();
+        for (int move : validMoves) {
+            int line = getColumnHeight(move);
+            set(move, line, color);
+            int value = minMax(3, color, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+            set(move, line, 0); // Undo the move
+            if (value > bestValue) {
+                bestValue = value;
+                bestMove = move;
+            }
+        }
+        return bestMove;
+    }
+
+    int minMax(int depth, int color, int alpha, int beta, boolean maximizingPlayer) {
+        if (depth == 0 || isFull()) {
+            return getValueBoard(color);
+        }
+
+        List<Integer> validMoves = getValidMoves();
+        if (maximizingPlayer) {
+            int maxEval = Integer.MIN_VALUE;
+            for (int move : validMoves) {
+                int line = getColumnHeight(move);
+                set(move, line, color);
+                int eval = minMax(depth - 1, color, alpha, beta, false);
+                set(move, line, 0); // Undo the move
+                maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return maxEval;
+        } else {
+            int minEval = Integer.MAX_VALUE;
+            for (int move : validMoves) {
+                int line = getColumnHeight(move);
+                set(move, line, 3 - color);
+                int eval = minMax(depth - 1, color, alpha, beta, true);
+                set(move, line, 0); // Undo the move
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+    }
+
     int minimax(int depth, int color, int alpha, int beta, boolean maximizingPlayer) {
         if (depth == 0 || isFull()) {
             return getValueBoard(color);
@@ -102,7 +156,6 @@ public class Puissance4 {
 
     private int getValue(PLace pLace) {
         int value = 0;
-        System.out.println(pLace);
         value += getValueHorizontal(pLace);
         value += getValueVertical(pLace);
         value += getValueDiagonal(pLace);
