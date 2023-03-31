@@ -326,6 +326,8 @@ class PLace:
         return f"PLace : (col={self.x}, line={self.y}, value={self.value})"
 
 
+
+
 def main():
         puissance4 = Puissance4()
         puissance4.init()
@@ -341,6 +343,7 @@ def main():
         puissance4.set(5, 1, 2)
         puissance4.show_board()
         print(puissance4.getValueBoard(2))
+        print(puissance4.getValueBoard(1))
 
 if __name__ == "__main__":
     main()
