@@ -1,5 +1,8 @@
+import random
+
 class Puissance4:
-    def minimax(self,depth, color, alpha, beta, maximizingPlayer):
+
+    def minimax(self, depth, color, alpha, beta, maximizingPlayer):
         if depth == 0 or self.isFull():
             return self.getValueBoard(color)
 
@@ -10,7 +13,7 @@ class Puissance4:
                 line = self.getColumnHeight(move)
                 set(move, line, color)
                 eval = self.minimax(depth - 1, color, alpha, beta, False)
-                set(move, line, 0) # Annule le coup
+                set(move, line, 0)  # Annule le coup
                 maxEval = max(maxEval, eval)
                 alpha = max(alpha, eval)
                 if beta <= alpha:
@@ -22,7 +25,7 @@ class Puissance4:
                 line = self.getColumnHeight(move)
                 set(move, line, 3 - color)
                 eval = self.minimax(depth - 1, color, alpha, beta, True)
-                set(move, line, 0) # Annule le coup
+                set(move, line, 0)  # Annule le coup
                 minEval = min(minEval, eval)
                 beta = min(beta, eval)
                 if beta <= alpha:
@@ -42,7 +45,7 @@ class Puissance4:
                 validMoves.append(i)
         return validMoves
 
-    def getColumnHeight(self,col):
+    def getColumnHeight(self, col):
         height = 0
         for value in self.board[col]:
             if value != 0:
@@ -53,24 +56,24 @@ class Puissance4:
 
     board = [[0 for j in range(6)] for i in range(7)]
 
-    def set(self,col, line, value):
+    def set(self, col, line, value):
         self.board[col][line] = value
 
-    def getValueBoard(self,color):
+    def getValueBoard(self, color):
         places = self.get_places(color)
         value = 0
         for place in places:
             value += self.getValue(place)
         return value
 
-    def getValue(self,place):
+    def getValue(self, place):
         value = 0
         value += self.get_value_horizontal(place)
         value += self.get_value_vertical(place)
         value += self.getValueDiagonal(place)
         return value
 
-    def getValueDiagonal(self,pLace):
+    def getValueDiagonal(self, pLace):
         value = 0
         valueTopLeftBottomRight = 0
         valueTopRightBottomLeft = 0
@@ -86,41 +89,39 @@ class Puissance4:
             value += 10
         return value
 
-
-    def possibleTopRightBottomLeft(self,pLace):
+    def possibleTopRightBottomLeft(self, pLace):
         cumul = 1
         for i in range(1, 4):
-            if pLace.x+i < 7 and pLace.y+i < 6:
-                if self.board[pLace.x+i][pLace.y+i] == pLace.value or self.board[pLace.x+i][pLace.y+i] == 0:
+            if pLace.x + i < 7 and pLace.y + i < 6:
+                if self.board[pLace.x + i][pLace.y + i] == pLace.value or self.board[pLace.x + i][pLace.y + i] == 0:
                     cumul += 1
                 else:
                     break
         for i in range(1, 4):
-            if pLace.x-i >= 0 and pLace.y-i >= 0:
-                if self.board[pLace.x-i][pLace.y-i] == pLace.value or self.board[pLace.x-i][pLace.y-i] == 0:
+            if pLace.x - i >= 0 and pLace.y - i >= 0:
+                if self.board[pLace.x - i][pLace.y - i] == pLace.value or self.board[pLace.x - i][pLace.y - i] == 0:
                     cumul += 1
                 else:
                     break
         return cumul >= 4
 
-
-    def possibleTopLeftBottomRight(self,pLace):
+    def possibleTopLeftBottomRight(self, pLace):
         cumul = 1
         for i in range(1, 4):
-            if pLace.x+i < 7 and pLace.y-i >= 0:
-                if self.board[pLace.x+i][pLace.y-i] == pLace.value or self.board[pLace.x+i][pLace.y-i] == 0:
+            if pLace.x + i < 7 and pLace.y - i >= 0:
+                if self.board[pLace.x + i][pLace.y - i] == pLace.value or self.board[pLace.x + i][pLace.y - i] == 0:
                     cumul += 1
                 else:
                     break
         for i in range(1, 4):
-            if pLace.x-i >= 0 and pLace.y+i < 6:
-                if self.board[pLace.x-i][pLace.y+i] == pLace.value or self.board[pLace.x-i][pLace.y+i] == 0:
+            if pLace.x - i >= 0 and pLace.y + i < 6:
+                if self.board[pLace.x - i][pLace.y + i] == pLace.value or self.board[pLace.x - i][pLace.y + i] == 0:
                     cumul += 1
                 else:
                     break
         return cumul >= 4
 
-    def get_value_top_right_bottom_left(self,pLace):
+    def get_value_top_right_bottom_left(self, pLace):
         col = pLace.x
         line = pLace.y
         value = 1
@@ -148,8 +149,7 @@ class Puissance4:
             return 0
         return value
 
-
-    def get_value_top_left_bottom_right(self,pLace):
+    def get_value_top_left_bottom_right(self, pLace):
         col = pLace.x
         line = pLace.y
         value = 1
@@ -177,14 +177,13 @@ class Puissance4:
             return 0
         return value
 
-    def get_value_vertical(self,pLace):
+    def get_value_vertical(self, pLace):
         value = 0
         if self.possible_vertical(pLace):
             value = self.calculate_value_vertical(pLace)
-        return value*10 if value >= 4 else value
+        return value * 10 if value >= 4 else value
 
-
-    def possible_vertical(self,pLace):
+    def possible_vertical(self, pLace):
         cumul = 1
         # check top
         for i in range(1, 4):
@@ -202,8 +201,7 @@ class Puissance4:
                     break
         return cumul >= 4
 
-
-    def calculate_value_vertical(self,pLace):
+    def calculate_value_vertical(self, pLace):
         col = pLace.x
         line = pLace.y
         value = 1
@@ -231,14 +229,13 @@ class Puissance4:
             return 0
         return value
 
-    def get_value_horizontal(self,pLace):
+    def get_value_horizontal(self, pLace):
         value = 0
         if self.possible_horizontal(pLace):
             value = self.calculate_value_horizontal(pLace)
-        return value*10 if value >= 4 else value
+        return value * 10 if value >= 4 else value
 
-
-    def possible_horizontal(self,pLace):
+    def possible_horizontal(self, pLace):
         cumul = 1
         # check right
         for i in range(1, 4):
@@ -256,8 +253,7 @@ class Puissance4:
                     break
         return cumul >= 4
 
-
-    def calculate_value_horizontal(self,pLace):
+    def calculate_value_horizontal(self, pLace):
         col = pLace.x
         line = pLace.y
         value = 1
@@ -285,8 +281,7 @@ class Puissance4:
             return 0
         return value
 
-
-    def get_places(self,color):
+    def get_places(self, color):
         places = []
         for i in range(7):
             for j in range(6):
@@ -296,12 +291,11 @@ class Puissance4:
                     places.append(PLace(i, j, self.board[i][j]))
         return places
 
-
     def show_board(self):
         for i in range(5, -1, -1):
             for j in range(7):
                 print(self.board[j][i], end=" ")
-            print() 
+            print()
 
     def __init__(self):
         self.board = []
@@ -316,6 +310,35 @@ class Puissance4:
     def set(self, col, line, value):
         self.board[col][line] = value
 
+
+    def tryBoardColonne(self,color, colonne):
+        gameBoard2 = list(self.board)
+        for j in range(6):
+            if gameBoard2[colonne][j] == 0:
+                gameBoard2[colonne][j] = color
+                values = self.getValueBoard(color)
+                gameBoard2[colonne][j] = 0
+                return values
+
+    def computeMove2(self, color):
+        indiceColonne = random.randint(0, 6)
+        while self.board[indiceColonne][5] != 0:
+            indiceColonne = random.randint(0, 6)
+        max_val = self.tryBoardColonne(color, indiceColonne)
+        for i in range(7):
+            a = self.tryBoardColonne(color, i)
+            if a == max_val and self.board[i][5] == 0:
+                if self.board[i][0] == 0:
+                    max_val = a
+                    indiceColonne = i
+            elif a > max_val and self.board[i][5] == 0:
+                max_val = a
+                indiceColonne = i
+        if self.board[indiceColonne][5] == 0:
+            return [indiceColonne, 0]
+        return 0  # Si on trouve rien, on joue au pif
+
+
 class PLace:
     def __init__(self, x, y, value):
         self.x = x
@@ -327,20 +350,22 @@ class PLace:
 
 
 def main():
-        puissance4 = Puissance4()
-        puissance4.init()
-        puissance4.set(2, 0, 2)
-        puissance4.set(3, 0, 2)
-        puissance4.set(3, 1, 2)
-        puissance4.set(3, 2, 1)
-        puissance4.set(3, 3, 1)
-        puissance4.set(4, 0, 1)
-        puissance4.set(4, 1, 1)
-        puissance4.set(4, 2, 2)
-        puissance4.set(5, 0, 2)
-        puissance4.set(5, 1, 2)
-        puissance4.show_board()
-        print(puissance4.getValueBoard(2))
+    puissance4 = Puissance4()
+    puissance4.init()
+    puissance4.set(2, 0, 2)
+    puissance4.set(3, 0, 2)
+    puissance4.set(3, 1, 2)
+    puissance4.set(3, 2, 1)
+    puissance4.set(3, 3, 1)
+    puissance4.set(4, 0, 1)
+    puissance4.set(4, 1, 1)
+    puissance4.set(4, 2, 2)
+    puissance4.set(5, 0, 2)
+    puissance4.set(5, 1, 2)
+    print(puissance4.computeMove2(2))
+    puissance4.show_board()
+    print(puissance4.getValueBoard(2))
+
 
 if __name__ == "__main__":
     main()
