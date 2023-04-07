@@ -14,8 +14,9 @@ public class Puissance4 {
         for (int move : validMoves) {
             int line = getColumnHeight(move);
             set(move, line, color);
-            int value = minMax(3, color, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+            int value = minMax(3, color, 0, 1, false,1);
             set(move, line, 0); // Undo the move
+            System.out.println(value);
             if (value > bestValue) {
                 bestValue = value;
                 bestMove = move;
@@ -24,7 +25,9 @@ public class Puissance4 {
         return bestMove;
     }
 
-    int minMax(int depth, int color, int alpha, int beta, boolean maximizingPlayer) {
+    int minMax(int depth, int color, int alpha, int beta, boolean maximizingPlayer, int value) {
+        if(value == Integer.MAX_VALUE || value == Integer.MIN_VALUE)
+            return value;
         if (depth == 0 || isFull()) {
             return getValueBoard(color);
         }
@@ -35,7 +38,7 @@ public class Puissance4 {
             for (int move : validMoves) {
                 int line = getColumnHeight(move);
                 set(move, line, color);
-                int eval = minMax(depth - 1, color, alpha, beta, false);
+                int eval = minMax(depth - 1, color, alpha, beta, false, value);
                 set(move, line, 0); // Undo the move
                 maxEval = Math.max(maxEval, eval);
                 alpha = Math.max(alpha, eval);
@@ -49,7 +52,7 @@ public class Puissance4 {
             for (int move : validMoves) {
                 int line = getColumnHeight(move);
                 set(move, line, 3 - color);
-                int eval = minMax(depth - 1, color, alpha, beta, true);
+                int eval = minMax(depth - 1, color, alpha, beta, true, value);
                 set(move, line, 0); // Undo the move
                 minEval = Math.min(minEval, eval);
                 beta = Math.min(beta, eval);
@@ -186,7 +189,7 @@ public class Puissance4 {
         }
         value = valueTopLeftBottomRight + valueTopRightBottomLeft;
         if(valueTopLeftBottomRight >= 4 || valueTopRightBottomLeft>=4){
-            value += 10;
+            value = Integer.MAX_VALUE;
         }
         return value;
     }
@@ -295,7 +298,7 @@ public class Puissance4 {
     private int getValueTopLeftBottomRight(PLace pLace) {
         int col = pLace.x;
         int line = pLace.y;
-        int value = 1;
+        int value = 0;
         boolean opponentRight = false;
         boolean opponentLeft = false;
         for (int i = 1; i < 4; i++) {
@@ -342,7 +345,7 @@ public class Puissance4 {
         if(possibleVertical(pLace)) {
             value = calculValueVertical(pLace);
         }
-        return value >= 4 ? value*10 : value;
+        return value >= 4 ? Integer.MAX_VALUE : value;
     }
 
     /**
@@ -428,7 +431,7 @@ public class Puissance4 {
         if(possibleHorizontal(pLace)){
             value = calculValueHorizontal(pLace);
         }
-        return value >= 4 ? value*10 : value;
+        return value >= 4 ? Integer.MAX_VALUE: value;
     }
 
     /**
