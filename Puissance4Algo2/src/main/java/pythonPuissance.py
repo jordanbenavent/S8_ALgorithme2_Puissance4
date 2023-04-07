@@ -2,30 +2,47 @@ import random
 
 class Puissance4:
 
-    def minimax(self, depth, color, alpha, beta, maximizingPlayer):
+    def bestCoup(self,color):
+        bestMove = -1
+        bestValue = float("-inf")
+        validMoves = self.getValidMoves()
+        for move in validMoves:
+            line = self.getColumnHeight(move)
+            self.set(move, line, color)
+            value = self.minMax(5, color, float("-inf"), float("inf"), False, 1)
+            self.set(move, line, 0)  # Undo the move
+            if value > bestValue:
+                bestValue = value
+                bestMove = move
+        return bestMove
+
+
+    def minMax(self,depth, color, alpha, beta, maximizingPlayer, value):
         if depth == 0 or self.isFull():
             return self.getValueBoard(color)
-
         validMoves = self.getValidMoves()
         if maximizingPlayer:
-            maxEval = float('-inf')
+            maxEval = float("-inf")
             for move in validMoves:
                 line = self.getColumnHeight(move)
-                set(move, line, color)
-                eval = self.minimax(depth - 1, color, alpha, beta, False)
-                set(move, line, 0)  # Annule le coup
+                self.set(move, line, color)
+                eval = self.minMax(depth - 1, color, alpha, beta, False, value)
+                self.set(move, line, 0)  # Undo the move
                 maxEval = max(maxEval, eval)
                 alpha = max(alpha, eval)
                 if beta <= alpha:
                     break
             return maxEval
         else:
-            minEval = float('inf')
+            minEval = float("inf")
             for move in validMoves:
                 line = self.getColumnHeight(move)
-                set(move, line, 3 - color)
-                eval = self.minimax(depth - 1, color, alpha, beta, True)
-                set(move, line, 0)  # Annule le coup
+                self.set(move, line, 3 - color)
+                if self.getValueBoard(3-color) > 1000:
+                    self.set(move, line, 0)
+                    return 20 - depth * 1000
+                eval = self.minMax(depth - 1, color, alpha, beta, True, value)
+                self.set(move, line, 0)  # Undo the move
                 minEval = min(minEval, eval)
                 beta = min(beta, eval)
                 if beta <= alpha:
@@ -37,6 +54,7 @@ class Puissance4:
             if column[5] == 0:
                 return False
         return True
+
 
     def getValidMoves(self):
         validMoves = []
@@ -362,9 +380,8 @@ def main():
     puissance4.set(4, 2, 2)
     puissance4.set(5, 0, 2)
     puissance4.set(5, 1, 2)
-    print(puissance4.computeMove2(2))
     puissance4.show_board()
-    print(puissance4.getValueBoard(2))
+    print(puissance4.bestCoup(1))
 
 
 if __name__ == "__main__":
