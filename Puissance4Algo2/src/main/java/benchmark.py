@@ -3,7 +3,7 @@ from pythonPuissance import *
 
 start_time = time.perf_counter()
 
-for i in range(0, 1000):
+for i in range(0, 2):
     #time.sleep(0.001)
     main()    
 

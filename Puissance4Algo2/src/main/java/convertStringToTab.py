@@ -1,3 +1,5 @@
+from time import sleep
+
 def convert_to_2d_array(input_string):
     rows, columns = 6, 7
     array_2d = [['' for _ in range(columns)] for _ in range(rows)]
@@ -7,14 +9,15 @@ def convert_to_2d_array(input_string):
         for row in range(rows):
             array_2d[row][col] = input_string[index]
             index += 1
+
+    for row in reversed(array_2d):
+        print(row)        
             
     return array_2d
 
-input_string = "m00000h00000mm0000hmh000h00000h00000000000"
-array_2d = convert_to_2d_array(input_string)
 
-for row in array_2d:
-    print(row)
+
+
 
 
 def count_characters(input_string):
@@ -35,6 +38,7 @@ def valid_characters(counts):
         return False
 
 def valid_size(counts):
+    #print("count vaut "+ str(counts))
     if counts['0'] + counts['h'] + counts['m'] == 42:
         return True
     else:
@@ -71,26 +75,81 @@ def check_correct_disposition(array_2d):
 
 
 
- #VALID GLOBAL:
- # appelle count
- # puis appelle valid char, valid size, correct nb pion par rapport a autre, puis full,
- #Puis convertir en tableau de tableau et ensuite check win et check correct disposition
-
-
-def global_validation(string):
+def validation(string):
     count = count_characters(string)
 
-    print("valid char" if valid_characters(count) else "invalid char")
-    print("valid size" if valid_size(count) else "invalid size")
-    print("valid nb pion" if valid_nb_pions(count) else "invalid nb pion")
-    print("board full" if board_full(count) else "board not full")
+    if not valid_characters(count) :
+        return "invalid char"
+    if not valid_size(count):
+        return "invalid size"
+    if not valid_nb_pions(count):
+        return "invalid nb pion"
+    if board_full(count):
+        return "board full"
+
 
     board = convert_to_2d_array(string)
 
-    print("correct disposition" if check_correct_disposition(board) else "incorrect disposition")
-    print("win" if check_win(board) else "no win")
+    if not check_correct_disposition(board):
+        return "incorrect disposition"
+    if check_win(board):
+        return "win"
+    
+
+    return "correct"
 
 
-global_validation("m00000h00000mm0000hmh000h00000h00000000000")
 
+def global_validation(string,id):
+    print(validation(string), id)
+
+
+
+
+
+#test chaine correcte
+global_validation("m00000h00000mm0000hmh000h00000h00000000000",1)
+
+sleep(1)
+
+global_validation("h00000000000000000000000000000000000000000",2)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h00000mh0000",3)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h00000hm0000",4)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h00000000000",5)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h00000hm0000",6)
+
+
+
+sleep(1)
+print("MAUVAISE CHAINE")
+
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h0000000000x",7)
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h00000000001",8)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h000000m000h",9)
+
+sleep(1)
+
+global_validation("m00000h00000mm0000hmh000h00000h0000h00000m",10)
+
+global_validation("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",11)
 

@@ -9,7 +9,7 @@ class Puissance4:
         for move in validMoves:
             line = self.getColumnHeight(move)
             self.set(move, line, color)
-            value = self.minMax(5, color, float("-inf"), float("inf"), False, 1)
+            value = self.minMax(4, color, float("-inf"), float("inf"), False, 1)
             self.set(move, line, 0)  # Undo the move
             if value > bestValue:
                 bestValue = value
