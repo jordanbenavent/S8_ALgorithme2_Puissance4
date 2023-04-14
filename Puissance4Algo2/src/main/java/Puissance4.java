@@ -14,7 +14,7 @@ public class Puissance4 {
         for (int move : validMoves) {
             int line = getColumnHeight(move);
             set(move, line, color);
-            int value = minMax(5, color, Integer.MIN_VALUE, Integer.MAX_VALUE, false,1);
+            int value = minMax(3, color, Integer.MIN_VALUE, Integer.MAX_VALUE, false,1);
             set(move, line, 0); // Undo the move
             System.out.println(value);
             if (value > bestValue) {
@@ -22,7 +22,6 @@ public class Puissance4 {
                 bestMove = move;
             }
         }
-
         showBoard();
         return bestMove;
     }

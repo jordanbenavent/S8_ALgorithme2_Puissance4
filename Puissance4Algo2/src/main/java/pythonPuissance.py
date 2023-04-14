@@ -9,7 +9,7 @@ class Puissance4:
         for move in validMoves:
             line = self.getColumnHeight(move)
             self.set(move, line, color)
-            value = self.minMax(4, color, float("-inf"), float("inf"), False, 1)
+            value = self.minMax(3, color, -1000, 1000, False, 1)
             self.set(move, line, 0)  # Undo the move
             if value > bestValue:
                 bestValue = value
@@ -92,7 +92,6 @@ class Puissance4:
         return value
 
     def getValueDiagonal(self, pLace):
-        value = 0
         valueTopLeftBottomRight = 0
         valueTopRightBottomLeft = 0
         if self.possibleTopLeftBottomRight(pLace) and self.possibleTopRightBottomLeft(pLace):
@@ -104,7 +103,7 @@ class Puissance4:
             valueTopRightBottomLeft = self.get_value_top_right_bottom_left(pLace)
         value = valueTopLeftBottomRight + valueTopRightBottomLeft
         if valueTopLeftBottomRight >= 4 or valueTopRightBottomLeft >= 4:
-            value += 10
+            value = value * 1000
         return value
 
     def possibleTopRightBottomLeft(self, pLace):
@@ -199,7 +198,7 @@ class Puissance4:
         value = 0
         if self.possible_vertical(pLace):
             value = self.calculate_value_vertical(pLace)
-        return value * 10 if value >= 4 else value
+        return value * 1000 if value >= 4 else value
 
     def possible_vertical(self, pLace):
         cumul = 1
@@ -251,7 +250,7 @@ class Puissance4:
         value = 0
         if self.possible_horizontal(pLace):
             value = self.calculate_value_horizontal(pLace)
-        return value * 10 if value >= 4 else value
+        return value * 1000 if value >= 4 else value
 
     def possible_horizontal(self, pLace):
         cumul = 1
@@ -367,23 +366,23 @@ class PLace:
         return f"PLace : (col={self.x}, line={self.y}, value={self.value})"
 
 
-def main():
+def main(board):
     puissance4 = Puissance4()
     puissance4.init()
+    # puissance4.board = board
+    puissance4.set(0, 0, 2)
+    puissance4.set(1, 0, 1)
     puissance4.set(2, 0, 2)
-    puissance4.set(3, 0, 2)
+    puissance4.set(3, 0, 1)
+    puissance4.set(4, 0, 1)
+    puissance4.set(5, 0, 1)
+    puissance4.set(2, 1, 2)
     puissance4.set(3, 1, 2)
     puissance4.set(3, 2, 1)
-    puissance4.set(3, 3, 1)
-    puissance4.set(4, 0, 1)
-    puissance4.set(4, 1, 1)
-    puissance4.set(4, 2, 2)
-    puissance4.set(5, 0, 2)
-    puissance4.set(5, 1, 2)
     puissance4.show_board()
-    print(puissance4.bestCoup(1))
-
+    best = puissance4.bestCoup(2)
+    print(best)
+    return best
 
 if __name__ == "__main__":
-    main()
-
+    main([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]])
