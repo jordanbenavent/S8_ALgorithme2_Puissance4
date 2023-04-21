@@ -32,4 +32,10 @@ Suite à la réalisation de notre fonction d'évaluation la semaine dernière, n
 Nous avons également commencé à implémenter les fonctions de conversion de la chaîne de caractères reçue en tableau en 2 dimensions, ainsi que les méthodes de vérification sur l'entrée (nombre de caractères corrects, tableau correctement constitué, etc...).
 
 
+## API, gestion des erreurs
+
+La dernière étape du projet a été d'implémenter une API REST afin que notre service puisse être appelé de l'extérieur. Les informations sur la partie en cours sont envoyés en paramètre de requêtes sous la forme d'une chaîne de caractères. Une fois la chaîne reçue, on effectue différents tests pour s'assurer que la chaîne soit correctement constituées (taille et caractères correctes) puis nous vérifions que le plateau soit possible (au niveau de la disposition, du nombre de pion de chacun des joueurs) et renvyons un code d'erreur en cas de problème (en respectant les consignes données dans le sujet du TD). Si la chaîne est correcte, alors on appelle notre algorithme de MiniMax pour trouver le coup optimal et le renvoyer en JSON. On renvoie le numéro de la colonne à jouer. 
+
+L'API est codée en Python avec le module Flask. Notre projet est disponible en tant qu'image Docker. 
+
 
