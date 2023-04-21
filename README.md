@@ -1,5 +1,14 @@
 # S8_ALgorithme2_Puissance4
 
+## Comment lancer le programme
+
+Télécharger notre projet zip
+lancer le fichier build.sh qui construit notre image docker et lance le containeur
+Utiliser un outil comme Postman pour appeller notre api (sur le port 5000) en passant en paramètre le tableau sous la forme d'une chaîne de caractère.
+Voici un example de reqûete : 
+
+localhost:5000/move?b=m00000h00000mm0000hmh000h00000h00000000000
+
 Durant ce projet de recherche, nous avons pour mission de développer une IA efficace pour joueur au jeu Puissance 4. Notre programme exposera une api REST conforme aux descriptions demandées. 
 Pour mettre en oeuvre notre IA, nous avons décider d'utiliser l'algorithme MiniMax. Notre travail de recherche s'est effectué en 3 principales phases : 
 * Elaboration de la fonction d'évaluation (heuristique)
