@@ -60,6 +60,70 @@ def board_full(counts):
 
 def check_win(array_2d):
     # TODO
+    hWin = check_win_color(array_2d, 'h')
+    mWin = check_win_color(array_2d, 'm')
+    return hWin or mWin
+
+def check_win_color(array_2d, color):
+    win = False
+    for col in range(7):
+        for row in range(6):
+            if array_2d[row][col] == color:
+                win = win or check_win_color_horizontal(array_2d, color, row, col)
+                win = win or check_win_color_vertical(array_2d, color, row, col)
+                win = win or check_win_color_diagonal(array_2d, color, row, col)
+    return win
+
+def check_win_color_horizontal(array_2d, color, row, col):
+    if array_2d[row][3] == color:
+        number = 1
+        for i in range(1,4):
+            if col+i<7 and array_2d[row][col+i] == color:
+                number += 1
+            if col-i>=0 and array_2d[row][col-i] == color:
+                number += 1    
+        if number == 4:
+            return True
+    return False
+
+def check_win_color_vertical(array_2d, color, row, col):
+    if array_2d[2][col] == color:
+        number = 1
+        for i in range(1,4):
+            if row+i<6 and array_2d[row+i][col] == color:
+                number += 1
+            if row-i>=0 and array_2d[row-i][col] == color:
+                number += 1    
+        if number == 4:
+            return True
+    return False
+
+def check_win_color_diagonal(array_2d, color, row, col):
+    win = False
+    win = win or check_win_color_diagonal_bottom_left_up_right(array_2d, color, row, col)
+    win = win or check_win_color_diagonal_bottom_right_up_left(array_2d, color, row, col)
+    return win
+
+def check_win_color_diagonal_bottom_left_up_right(array_2d, color, row, col):
+    number = 1
+    for i in range(1,4):
+        if row+i<6 and col+i<7 and array_2d[row+i][col+i] == color:
+            number += 1
+        if row-i>=0 and col-i>=0 and array_2d[row-i][col-i] == color:
+            number += 1  
+    if number == 4:
+        return True
+    return False
+
+def check_win_color_diagonal_bottom_right_up_left(array_2d, color, row, col):
+    number = 1
+    for i in range(1,4):
+        if row+i<6 and col-i>=0 and array_2d[row+i][col-i] == color:
+            number += 1
+        if row-i>=0 and col+i<7 and array_2d[row-i][col+i] == color:
+            number += 1    
+    if number == 4:
+        return True
     return False
 
 
@@ -171,3 +235,13 @@ def test():
     global_validation("m00000h00000mm0000hmh000h00000h0000h00000m", 10)
 
     global_validation("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm", 11)
+
+    print("TEST WIN")
+
+    global_validation("hm0000hm0000hm0000h00000000000000000000000", 12)
+
+    global_validation("mhhhh0mm0000000000000000000000000000000000", 13)
+
+    global_validation("h00000mh0000mmh000mmhh00h00000000000000000", 14)
+
+    global_validation("mmhh00mhh000mh0000hm0000000000000000000000", 15)

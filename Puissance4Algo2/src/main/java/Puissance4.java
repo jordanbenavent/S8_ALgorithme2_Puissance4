@@ -481,6 +481,9 @@ public class Puissance4 {
         boolean opponentRight = false;
         boolean opponentLeft = false;
         //right
+        if(!getMiddle(pLace)){
+            return 0;
+        }
         for(int i = col+1; i < 7; i++){
             if(board.get(i).get(line) == pLace.value){
                 value++;
@@ -506,6 +509,10 @@ public class Puissance4 {
             return 0;
         }
         return value;
+    }
+
+    private boolean getMiddle(PLace pLace) {
+        return board.get(3).get(pLace.y) == pLace.value;
     }
 
 
